@@ -4,11 +4,13 @@ interface folder {
   type: string
   name: string
   children: object[]
+  path: string
 }
 
 interface file {
   type: string
   name: string
+  path: string
 }
 
 /**
@@ -27,17 +29,19 @@ export function getFilesAndFoldersInDir(path): object[] {
       const data: folder = {
         type: 'folder',
         name: item,
-        children: []
+        children: [],
+        path
       }
-      const children = getFilesAndFoldersInDir(itemPath)
-      if (children && children.length) {
-        data.children = children
-      }
+      // const children = getFilesAndFoldersInDir(itemPath)
+      // if (children && children.length) {
+      //   data.children = children
+      // }
       result.push(data)
     } else {
       const fileData: file = {
         type: 'file',
-        name: item
+        name: item,
+        path
       }
       // 文件
       result.push(fileData)

@@ -1,6 +1,6 @@
 const ipcRenderer = require('electron').ipcRenderer
 
-export const readTreeDataList = (patch): Promise<unknown> => {
+export const readTreeDataList = (path): Promise<unknown> => {
   return new Promise((resolve, reject): void => {
     //发布获取主进程传递的数据的事件
     ipcRenderer.on('asynchronous-reply', function (_event, arg) {
@@ -12,6 +12,6 @@ export const readTreeDataList = (patch): Promise<unknown> => {
       }
     })
     //通知主进程获取数据
-    ipcRenderer.send('async_get_tree_data', patch)
+    ipcRenderer.send('async_get_tree_data', path)
   })
 }

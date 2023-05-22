@@ -7,6 +7,8 @@ import '../../../../../lib/ztree/js/jquery.ztree.excheck'
 import '../../../../../lib/ztree/js/jquery.ztree.exedit'
 import '../../../../../lib/ztree/js/jquery.ztree.exhide'
 import { readTreeDataList } from '../../tools/communication'
+import { isTerminatorless } from '@babel/types'
+
 
 let tree
 
@@ -20,6 +22,21 @@ const onClickTree = (): void => {
 
 }
 
+const onExpand = (event, treeId, treeNode): void => {
+  const treeObj = $.fn.zTree.getZTreeObj("noteZTree");
+  readTreeDataList(treeNode.path + '/' + treeNode.name).then((list) => {
+    if (treeNode.checked !== true) {
+      treeNode.checked = true
+      treeObj.addNodes(treeNode, list)
+    }
+  })
+}
+
+// const onCollapse = (event, treeId, treeNode): void => {
+//   const treeObj = $.fn.zTree.getZTreeObj("noteZTree");
+//   treeObj.removeChildNodes(treeNode)
+// }
+
 onMounted(() => {
   nextTick(async () => {
     await getTreeData()
@@ -31,9 +48,10 @@ onMounted(() => {
  * @method
  * @desc 读取文件数据
  */
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 const getTreeData = () => {
   return new Promise((resolve, reject) => {
-    readTreeDataList('D:\\桌面\\note_test').then((res: []) => {
+    readTreeDataList('/Users/xubinghua/code').then((res: []) => {
       console.log(res, '[[][][][[]')
       zNodes = res
       resolve()
@@ -58,7 +76,9 @@ const setting = {
     showIcon: false
   },
   callback: {
-    onClick: onClickTree
+    onClick: onClickTree,
+    onExpand: onExpand,
+    onCollapse: onCollapse
   }
 }
 </script>
