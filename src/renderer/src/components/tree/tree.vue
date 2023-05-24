@@ -18,12 +18,17 @@ let zNodes = []
  * @method
  * @desc 树节点点击事件
  */
-const onClickTree = (): void => {
-
+// 点击TreeNode触发
+const onClickTree = (event, treeId, treeNode, clickFlag): void => {
+  // // 文件夹自动展开
+  // if (treeNode.type === 'folder') {
+  //   // TODO：再次点击需要删除数据
+  //   refreshTreeNodes(getTreeObj(), treeNode)
+  // }
 }
 
-const onExpand = (event, treeId, treeNode): void => {
-  const treeObj = $.fn.zTree.getZTreeObj("noteZTree");
+// 刷新节点
+const refreshTreeNodes = (treeObj, treeNode): void => {
   readTreeDataList(treeNode.path + '/' + treeNode.name).then((list) => {
     if (treeNode.checked !== true) {
       treeNode.checked = true
@@ -32,10 +37,10 @@ const onExpand = (event, treeId, treeNode): void => {
   })
 }
 
-// const onCollapse = (event, treeId, treeNode): void => {
-//   const treeObj = $.fn.zTree.getZTreeObj("noteZTree");
-//   treeObj.removeChildNodes(treeNode)
-// }
+// 展开TreeNode
+const onExpand = (event, treeId, treeNode): void => {
+  refreshTreeNodes(getTreeObj(), treeNode)
+}
 
 onMounted(() => {
   nextTick(async () => {
@@ -44,6 +49,11 @@ onMounted(() => {
   })
 })
 
+// 折叠TreeNode
+const onCollapse = (event, treeId, treeNode): void => {
+  const treeObj = $.fn.zTree.getZTreeObj('#noteZTree')
+  treeObj.removeChildNodes(treeNode)
+}
 /**
  * @method
  * @desc 读取文件数据
